@@ -1,0 +1,23 @@
+{code}
+======
+
+Title: {title}
+
+Speaker: {speakers}
+
+
+Don't forgot to click on "save" when done :)
+
+ - [ ] The video matches the talk title
+ - [ ] Image OK
+ - [ ] Sound Ok
+ - [ ] Slides are visisble
+ - [ ] Speaker is visiable
+ - [ ] Video was cut (start and end)
+ - [ ] Video didn't need any cutting
+ - [ ] The finished video isn't longer than {duration} minutes
+ - Name of the reviewer:
+
+Anmerkungen (optional):
+
+

@@ -1,0 +1,8 @@
+Hello {name},
+
+please use the given link to upload your talks:
+
+{upload_links_list}
+
+Cheers,
+  The conference team
