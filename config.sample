@@ -1,0 +1,28 @@
+# Pretalx config
+
+# See https://pretalx.com/orga/me or your own instance
+export PRETALX_URL=https://pretalx.com
+export PRETALX_EVENT=democon
+export PRETALX_API_URL=${PRETALX_URL}/api/events/${PRETALX_EVENT}
+export PRETALX_API_TOKEN= 
+
+# Seafile config
+
+export SEAFILE_URL=https://upload.democon.conf
+# please use `./utils/seafile_get_token.sh`, will also append the to `config`
+export SEAFILE_API_TOKEN=
+# ID of the library in seafile
+export SEAFILE_REPO_ID=
+# Uplodas base directory 
+export SEAFILE_UPLOAD_DIR=upload
+
+# Conference settings
+
+# Filter to exclude special types of talks (for jq) which are not prerecorded
+export TALKS_EXCLUDE_FILTER='select((.submission_type[] | contains("Workshop")) or (.submission_type[] == "Anwendertreffen / BoF") or (.submission_type[] == "Diverses") or (.submission_type[] == "Expert:innenfragestunde")'
+
+# Mail
+export MAIL_REPLAY_TO="upload@fdemocon.conf"
+export MAIL_TEMPLATES_BASE_DIR="../../mail_templates"
+export MAIL_UPLOAD_LINKS_SUBJECT="Upload your submission: {submission_title}"
+export MAIL_TEMPLATE_UPLOAD_LINKS="${MAIL_TEMPLATES_BASE_DIR}/send_upload_links.template"
