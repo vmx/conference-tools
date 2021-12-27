@@ -29,8 +29,10 @@ with open(data_path) as data_file:
     data = json.load(data_file)
 
 os.makedirs("md", exist_ok=True)
+process_completed = "/"+os.environ['SEAFILE_PROCESS_DIR']+"/"+os.environ['SEAFILE_PROCESS_COMPLETE_DIR']
 
 for entry in data:
+    entry['process_completed'] = process_completed
     text = template.format(**entry)
     with open(f"md/{entry['code']}.md", "w") as md_file:
         md_file.write(text)

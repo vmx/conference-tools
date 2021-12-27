@@ -13,13 +13,21 @@ export SEAFILE_URL=https://upload.democon.conf
 export SEAFILE_API_TOKEN=
 # ID of the library in seafile
 export SEAFILE_REPO_ID=
-# Uplodas base directory 
+# Uploads base directory 
 export SEAFILE_UPLOAD_DIR=upload
+# Processing base directory
+export SEAFILE_PROCESS_DIR=processing
+# Subdir in SEAFILE_PROCESS_DIR which contain completed submission
+export SEAFILE_PROCESS_COMPLETE_DIR=completed
+# Final directory for schedule
+export SEAFILE_SCHEDULE_DIR=schedule
 
 # Conference settings
 
 # Filter to exclude special types of talks (for jq) which are not prerecorded
 export TALKS_EXCLUDE_FILTER='select((.submission_type[] | contains("Workshop")) or (.submission_type[] == "Anwendertreffen / BoF") or (.submission_type[] == "Diverses") or (.submission_type[] == "Expert:innenfragestunde")'
+# First day of conference (Format YYYY-MM-DD)
+export FIRST_DAY=2021-06-07
 
 # Mail
 export MAIL_REPLAY_TO="upload@fdemocon.conf"

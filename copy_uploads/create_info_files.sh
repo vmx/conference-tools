@@ -8,16 +8,17 @@
 # are the right ones (the upload was correct), cut properly and meet the
 # expected quality.
 
-if [ "${#}" -lt 3 ]; then
-    echo "Usage: $(basename "${0}") <pretalx-api-url> <pretalx-api-token> <info-template-file>"
+cd $(dirname $0)
+. ../config
+
+if [ "${#}" -lt 1 ]; then
+    echo "Usage: $(basename "${0}") <info-template-file>"
     echo ""
-    echo "Example: $(basename "${0}") https://pretalx.com/api/events/your-event cc78456d498548331ea9b744f262fa68d23d27e8 info.template"
+    echo "Example: $(basename "${0}") info.template"
     exit 1
 fi
 
-pretalx_api_url=${1}
-pretalx_api_token=${2}
-info_template=${3}
+info_template=${1}
 
 mkdir -p out
 cd out || exit 2
@@ -25,11 +26,11 @@ cd out || exit 2
 echo "Getting data from pretalx…"
 
 # We only care about the confirmed talks
-python3 ../pretalx-get-all.py "${pretalx_api_token}" "${pretalx_api_url}/submissions/?state=confirmed" > confirmed.json
+python3 ../../utils/pretalx-get-all.py "${PRETALX_API_TOKEN}" "${PRETALX_API_URL}/submissions/?state=confirmed" > confirmed.json
 jq '.results' < confirmed.json > confirmed_results.json
 
 # Get all the speakers
-python3 ../pretalx-get-all.py "${pretalx_api_token}" "${pretalx_api_url}/speakers/" > speakers.json
+python3 ../../utils/pretalx-get-all.py "${PRETALX_API_TOKEN}" "${PRETALX_API_URL}/speakers/" > speakers.json
 
 # Transform the file to one where the speaker code (identifier) is the key and the value their name and email address
 jq '.results[] | {(.code): {name, email}}' < speakers.json|jq -s 'add' > speakers_name_email.json

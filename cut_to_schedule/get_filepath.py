@@ -13,11 +13,12 @@
 import argparse
 import json
 import re
+import os
 
 from datetime import datetime
 
 # We also output the day relative to the conference start
-CONFERENCE_START = datetime.fromisoformat("2021-06-07T00:00+02:00")
+CONFERENCE_START = datetime.fromisoformat(os.environ['FIRST_DAY']+"T00:00+02:00")
 
 
 parser = argparse.ArgumentParser(
