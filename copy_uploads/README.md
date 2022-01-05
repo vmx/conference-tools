@@ -8,7 +8,7 @@ Usage:
 
 Example:
 
-    ./create_info_files.sh info.template
+    ./create_info_files.sh ../templates/en/info.template
     ./sync_files_and_upload_info.sh
 
 `sync_files_and_upload_info.sh` can be run multiple time for copy newly uploaded files, e.g. using `crontab`.

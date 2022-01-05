@@ -31,6 +31,10 @@ export FIRST_DAY=2021-06-07
 
 # Mail
 export MAIL_REPLAY_TO="upload@fdemocon.conf"
-export MAIL_TEMPLATES_BASE_DIR="../../mail_templates"
+export MAIL_TEMPLATES_BASE_DIR="../../templates/en"
+
 export MAIL_UPLOAD_LINKS_SUBJECT="Upload your submission: {submission_title}"
 export MAIL_TEMPLATE_UPLOAD_LINKS="${MAIL_TEMPLATES_BASE_DIR}/send_upload_links.template"
+
+export MAIL_UPLOAD_RECIEVED_SUBJECT="Status recording: {submission_title}"
+export MAIL_TEMPLATE_UPLOAD_RECIEVED="${MAIL_TEMPLATES_BASE_DIR}/upload_recieved.template"
