@@ -33,8 +33,12 @@ os.makedirs("emails", exist_ok=True)
 
 for entry in data:
     # create old style link (only single here not list)
-    entry["upload_links_list"] = f" - {entry['title']}: {entry['upload_link']}"
+    if 'upload_link' in entry:
+        entry["upload_links_list"] = f" - {entry['title']}: {entry['upload_link']}"
+    # keep pretalx template values
     entry["name"] = '{name}'
+    entry["submission_title"] = '{submission_title}'
+
     email_body = template.format(**entry)
     with open(f"emails/{entry['code']}", 'w') as email_file:
         email_file.write(email_body)

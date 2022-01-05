@@ -16,6 +16,7 @@ cd $(dirname $0)
 seafile_api_v20="${SEAFILE_URL}/api2"
 
 cd out || (echo "'./out' directory must exist, create it with the 'create_info_files.sh' script." && exit 2)
+mkdir -p emails
 
 echo "Pushing files to Seafile…"
 
@@ -31,6 +32,8 @@ for created_dir in ${created_dirs}
 do
     echo "Uploading ./md/${created_dir}.md…"
     ../upload_file.sh "${upload_api_link}" "${SEAFILE_PROCESS_DIR}" "./md/${created_dir}.md"
+    echo "Create mail for submission {created_dir}"
+    cp ${MAIL_TEMPLATE_UPLOAD_RECIEVED} emails/${created_dir}
 done
 
 if [ "${created_dirs}" != "" ]
