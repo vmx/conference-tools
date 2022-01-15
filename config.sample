@@ -38,3 +38,10 @@ export MAIL_TEMPLATE_UPLOAD_LINKS="${MAIL_TEMPLATES_BASE_DIR}/send_upload_links.
 
 export MAIL_UPLOAD_RECIEVED_SUBJECT="Status recording: {submission_title}"
 export MAIL_TEMPLATE_UPLOAD_RECIEVED="${MAIL_TEMPLATES_BASE_DIR}/upload_recieved.template"
+
+export MAIL_FINAL_SUBJECT="Last information for speakers"
+export MAIL_TEMPLATE_FINAL="${MAIL_TEMPLATES_BASE_DIR}/final_status_mail.template"
+export MAIL_FINAL_RECORED="Thanks for uploading pre-recordings of all your talks." # en
+export MAIL_FINAL_LIVE="You haven't uploaded any pre-recordings." # en
+# export MAIL_FINAL_RECORED="Vielen dank für die Einreichung der Aufzeichnung deines Talks." # de
+# export MAIL_FINAL_LIVE="Du hast uns vorab keine Aufzeichnung übermittelt." # de
