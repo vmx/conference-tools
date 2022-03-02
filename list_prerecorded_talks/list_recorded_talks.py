@@ -41,18 +41,18 @@ with open(talks_length_path) as talks_length_file:
         length_formatted = time.strftime("%M:%S", length)
         talks_length[pretalx_id] = length_formatted
 
-print("FOSSGIS 2021 Schedule")
+print("FOSSGIS 2022 Schedule")
 print("=====================")
 
 # First day is the OSM sunday
-days = schedule["schedule"]["conference"]["days"][1:]
+days = schedule["schedule"]["conference"]["days"]
 for day in days:
     print("\n")
     print(day["date"])
     print("----------")
     for room_name, room in day["rooms"].items():
         # We only care about the four main stages
-        if room_name in ["Bühne 1", "Bühne 2", "Bühne 3", "Bühne 4"]:
+        if room_name in ["Bühne 1", "Bühne 2", "Bühne 3", "Demosession"]:
             print(f"\n\n### {room_name}\n")
 
             for talk in room:
