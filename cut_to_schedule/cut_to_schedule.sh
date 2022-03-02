@@ -32,8 +32,7 @@ schedule_version=$(curl --silent -X GET "${schedule_url}export/schedule.json"|jq
 python3 ../../utils/pretalx-get-all.py "${PRETALX_API_TOKEN}" "${PRETALX_API_URL}/submissions/?state=confirmed" > confirmed.json
 
 # Create a file that creates the scheduling information. Exclude lightning talks.
-exclude_talk=${TALKS_EXCLUDE_FILTER}' or (.submission_type[] == "Lightning Talk")'
-jq ".results[] | ${exclude_talk} | not) | {(.code): {title, room: first(.slot.room[]), start: .slot.start}}" < confirmed.json|jq --slurp 'add' > schedule.json
+jq ".results[] | ${TALKS_EXCLUDE_FILTER} | not) | {(.code): {title, room: first(.slot.room[]), start: .slot.start}}" < confirmed.json|jq --slurp 'add' > schedule.json
 
 # The Seafile part
 

@@ -42,11 +42,11 @@ do
     # Print progress indicator to stderr, so that you can still pipe the
     # expected output into a file.
     echo "Processing ${dir_name}…" >&2
-    latest_modified_mkv_file=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v20}/repos/${repo_id}/dir/?p=/${source_dir}/${dir_name}&t=f"|jq --raw-output '[.[] | select(.name | endswith(".mkv"))] | sort_by(-.mtime) | first | .name | strings')
+    latest_modified_mkv_file=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v20}/repos/${repo_id}/dir/?p=/${source_dir}/${dir_name}&t=f"|jq --raw-output '[.[] | select(.name | match(".mkv$|.mp4$"))] | sort_by(-.mtime) | first | .name | strings')
     if [ "${latest_modified_mkv_file}" != "" ]
     then
         # Get the target file path
-        target_file=$(python3 ../get_filepath.py "${dir_name}" schedule.json)
+        target_file=$(python3 ../get_filepath.py "${dir_name}" schedule.json)"."${latest_modified_mkv_file##*.}
 
         # Copy file only if it wasn't copied yet
         file_code=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v20}/repos/${repo_id}/file/detail/?p=/${target_dir}/${target_file}" --output /dev/null --write-out '%{http_code}')

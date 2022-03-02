@@ -71,5 +71,5 @@ schedule_info = schedule[pretalx_id]
 room = sanitize_string(schedule_info["room"]).lower()
 title = sanitize_string(schedule_info["title"])
 (day, date) = sanitize_date(schedule_info["start"])
-filepath = f"{room}/{day}/{day}_{date}_{pretalx_id}_{title}.mkv"
+filepath = f"{room}/{day}/{day}_{date}_{pretalx_id}_{title}"
 print(filepath)
