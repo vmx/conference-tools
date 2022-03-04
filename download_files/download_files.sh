@@ -71,7 +71,7 @@ urlencode () {
 
 # Create the output directory if it doesn't exist yet
 mkdir -p "${out_dir}"
-
+rm -f "${out_dir}/B2SUMS" &> /dev/null
 
 # The URL without the path
 base_url=$(echo "${url}"|cut -d '/' -f 1-3)
@@ -99,7 +99,11 @@ for file_path in ${file_paths}
 do
     file_path_urlencoded=$(urlencode "${file_path}")
     echo "Downloading ${file_path}…"
-    ${curl} "${url}/files/?p=${file_path_urlencoded}&dl=1" --location --output "${out_dir}/$(basename "${file_path}")"
+    if [ -f "${out_dir}/$(basename "${file_path}")" ]; then
+        echo "File $(basename "${file_path}") already exists, if checksum is invalid please remove!"
+    else
+        ${curl} "${url}/files/?p=${file_path_urlencoded}&dl=1" --location --output "${out_dir}/$(basename "${file_path}")"
+    fi
 done
 
 echo "Checksum check…"
@@ -110,7 +114,7 @@ if [ "${b2sum_status}" = 0 ]
 then
      echo "Checksums match."
 else
-     echo "ERROR: Checksums do *not* match. DOWNLOAD AGAIN!"
+     echo "ERROR: Checksums do *not* match. REMOVE BROKEN FILE AND START DOWNLOAD AGAIN!"
      exit 7
 fi
 
