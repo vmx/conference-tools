@@ -25,12 +25,15 @@ mkdir -p out
 cd out
 
 # loading current schedule
+
 curl ${PRETALX_URL}/${PRETALX_EVENT}/schedule.json > schedule.json
 
 # getting lengths of all talks
+echo "Calculate lengths of talks…"
 ../get_lengths.sh "$1" > talk_lengths.txt
 
 # build program
+echo "Building plan of program…"
 python3 ../list_recorded_talks.py schedule.json talk_lengths.txt > program.md
 cp program.md "$1"
 
