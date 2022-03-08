@@ -39,6 +39,11 @@ for entry in data:
     entry["name"] = '{name}'
     entry["submission_title"] = '{submission_title}'
 
+    if 'is_prerecorded' in entry and entry['is_prerecorded']:
+        entry["prerecorded_specific_text"] = os.getenv("MAIL_FINAL_RECORED")
+    else:
+        entry["prerecorded_specific_text"] = os.getenv("MAIL_FINAL_LIVE")
+
     email_body = template.format(**entry)
     with open(f"emails/{entry['code']}", 'w') as email_file:
         email_file.write(email_body)

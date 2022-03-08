@@ -14,28 +14,12 @@
 # jq, curl, python3
 #
 # This script creates a directory called `out` which contains all the files
-# that are created when running this script. The final output is called
-# `email_data.csv`
+# that are created when running this script. 
 
-# You can get your auth token via
-# curl -X POST --data "username=<your-username>&password=<your-password>" '<you-server>/api2/auth-token/'
+cd $(dirname $0)
+. ../config
 
-if [ "${#}" -lt 7 ]; then
-    echo "Usage: $(basename "${0}") <pretalx-api-url> <pretalx-api-token> <seafile-base-url> <seafile-auth-token> <seafile-repo-id> <seafile-directory> <email-template-file>"
-    echo ""
-    echo "Example: $(basename "${0}") https://pretalx.com/api/events/your-event cc78456d498548331ea9b744f262fa68d23d27e8 https://example.org fe91e764226cc534811f0ba32c62a6ac41ad0d7b 280b593a-f868-0594-d97a-23d88822a35f some-dir email.template"
-    exit 1
-fi
-
-pretalx_api_url=${1}
-pretalx_api_token=${2}
-seafile_base_url=${3}
-seafile_api_token=${4}
-seafile_repo_id=${5}
-seafile_dir=${6}
-email_template=${7}
-
-seafile_api_v20="${seafile_base_url}/api2"
+seafile_api_v20="${SEAFILE_URL}/api2"
 
 mkdir -p out
 cd out || exit 2
@@ -44,15 +28,15 @@ cd out || exit 2
 echo "Getting data from pretalx…"
 
 # We only care about the confirmed talks
-python3 ../pretalx-get-all.py "${pretalx_api_token}" "${pretalx_api_url}/submissions/?state=confirmed" > confirmed.json
+python3 ../../utils/pretalx-get-all.py "${PRETALX_API_TOKEN}" "${PRETALX_API_URL}/submissions/?state=confirmed" > confirmed.json
 
 # Exclude certain types of submissions. This is a FOSSGIS 2021 specific step.
 # It de-duplicates the data, so that it is one entry per speaker, as we want
 # to send the email about the upload link to all speakers of a talk
-jq '[.results[] | select((.submission_type[] | contains("Workshop")) or (.submission_type[] == "Anwendertreffen / BoF") | not) | { code: .code, speaker: .speakers[].code, title: .title, submission_type: .submission_type[]}]' < confirmed.json > talks.json
+jq "[.results[] | ${TALKS_EXCLUDE_FILTER} | not) | { code: .code, speaker: .speakers[].code, title: .title, submission_type: .submission_type[]}]" < confirmed.json > talks.json
 
 # Get all the speakers
-python3 ../pretalx-get-all.py "${pretalx_api_token}" "${pretalx_api_url}/speakers/" > speakers.json
+python3 ../../utils/pretalx-get-all.py "${PRETALX_API_TOKEN}" "${PRETALX_API_URL}/speakers/" > speakers.json
 
 # Transform the file to one where the speaker code (identifier) is the key and the value their name and email address
 jq '.results[] | {(.code): {name, email}}' < speakers.json|jq -s 'add' > speakers_name_email.json
@@ -61,19 +45,13 @@ jq '.results[] | {(.code): {name, email}}' < speakers.json|jq -s 'add' > speaker
 # The Seafile part
 echo "Getting data from Seafile…"
 
-curl --silent -X GET --header "Authorization: Token ${seafile_api_token}" "${seafile_api_v20}/repos/${seafile_repo_id}/dir/?p=/${seafile_dir}&t=d"|jq --raw-output '.[].name' > prerecorded_talks.txt
+curl --silent -X GET --header "Authorization: Token ${SEAFILE_API_TOKEN}" "${seafile_api_v20}/repos/${SEAFILE_REPO_ID}/dir/?p=/${SEAFILE_PROCESS_DIR}/${SEAFILE_PROCESS_COMPLETE_DIR}&t=d"|jq --raw-output '.[].name' > prerecorded_talks.txt
 
 
 # Final output part
+python3 ../combine_talks_speakers_prerecorded_talks.py > combined.json
 
-# Transform output into a list where one item is one speaker with all their
-# talks
-python3 ../combine_talks_speakers_prerecorded_talks.py|jq '[. | group_by(.email)[] | {email: .[0].email, name: .[0].name, talks: [.[] | {title, is_prerecorded}]}]' > combined.json
-
-# Check if *all* their talks were either pre-recorded :
-jq '[.[] | {email, name, all_talks_prerecorded: [.talks[].is_prerecorded] | all}]' < combined.json > combined_prerecorded.json
-
-# Create individual emails
-python3 ../data_to_email.py "../${email_template}" combined_prerecorded.json
+# Create emails per Talk
+python3 ../../utils/data_to_email_submission.py "${MAIL_TEMPLATE_FINAL}" combined.json
 
 echo "Emails can found at \`out/emails\`."
