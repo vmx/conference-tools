@@ -27,5 +27,6 @@ fi
 for dir in $(find "$1" -type f -name "*.mkv" -o -name "*.mp4" -exec dirname "{}" \; |sort -u)
 do
     echo "Processing b2sum ${dir} … "
-    b2sum ${dir}/*.* > "${dir}/B2SUMS"
+    cd ${dir}
+    b2sum *.* > "B2SUMS"
 done
