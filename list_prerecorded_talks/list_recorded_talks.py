@@ -41,81 +41,48 @@ with open(talks_length_path) as talks_length_file:
         length_formatted = time.strftime("%M:%S", length)
         talks_length[pretalx_id] = length_formatted
 
-print("FOSSGIS 2021 Schedule")
-print("=====================")
+doc_title = f'FOSSGIS 2022 Schedule (Version {schedule["schedule"]["version"]})'
+print(doc_title)
+print("="*len(doc_title))
 
 # First day is the OSM sunday
-days = schedule["schedule"]["conference"]["days"][1:]
+days = schedule["schedule"]["conference"]["days"]
 for day in days:
     print("\n")
     print(day["date"])
     print("----------")
     for room_name, room in day["rooms"].items():
         # We only care about the four main stages
-        if room_name in ["Bühne 1", "Bühne 2", "Bühne 3", "Bühne 4"]:
+        if room_name in ["Bühne 1", "Bühne 2", "Bühne 3", "Demosession"]:
             print(f"\n\n### {room_name}\n")
+
+            is_lt_block = False
+            intend = ""
+
 
             for talk in room:
                 pretalx_id = talk["url"].split("/")[-2]
 
                 # Special case lightning talks
-                if pretalx_id in [
-                    "MQWM83",
-                    "QWFKTH",
-                    "KXUK3W",
-                    "ZLGACF",
-                    "DF3TGM",
-                    "97WELW",
-                    "KVX7EA",
-                    "ZVFZQQ",
-                    "ZQKZQT",
-                    "CQDB8M",
-                    "DZCNKG",
-                ]:
-                    continue
-                if pretalx_id in [
-                    "WSUSUX",
-                    "MTJ9R9",
-                    "QVK8J8",
-                    "DSUDXJ",
-                    "MVPR79",
-                    "DZCNKG",
-                ]:
-                    if pretalx_id == "WSUSUX":
-                        talks_length[pretalx_id] = talks_length[
-                            "day1_mon_20210607_1015_lightning_talks.mkv"
-                        ]
-                    elif pretalx_id == "MTJ9R9":
-                        talks_length[pretalx_id] = talks_length[
-                            "day1_mon_20210607_1700_lightning_talks.mkv"
-                        ]
-                    elif pretalx_id == "QVK8J8":
-                        talks_length[pretalx_id] = talks_length[
-                            "day2_tue_20210608_1000_lightning_talks.mkv"
-                        ]
-                    elif pretalx_id == "DSUDXJ":
-                        talks_length[pretalx_id] = talks_length[
-                            "day2_tue_20210608_1200_lightning_talks.mkv"
-                        ]
-                    elif pretalx_id == "MVPR79":
-                        talks_length[pretalx_id] = talks_length[
-                            "day3_wed_20210609_1200_lightning_talks.mkv"
-                        ]
-                    else:
-                        pass
-
-                    talk["title"] = "Lightning Talks"
-                    talk["url"] = ""
+                if talk["type"] == "Lightning Talk":
+                    if not is_lt_block:
+                        # first LT
+                        print(" - Lightning Talks:")
+                    is_lt_block = True
+                    intend = "    "
+                else:
+                    is_lt_block = False
+                    intend = ""
 
                 if pretalx_id in talks_length:
                     maybe_recorded = f"`{talks_length[pretalx_id]}`"
                 else:
-                    maybe_recorded = "live"
+                    maybe_recorded = "**live**"
                 if talk["url"]:
                     print(
-                        f' - {talk["start"]}: {maybe_recorded} [{talk["title"]}]({talk["url"]})'
+                        f'{intend} - {talk["start"]}: {maybe_recorded} [{talk["title"]}]({talk["url"]})'
                     )
                 else:
                     print(
-                        f' - {talk["start"]}: {maybe_recorded} {talk["title"]}'
+                        f'{intend} - {talk["start"]}: {maybe_recorded} {talk["title"]}'
                     )

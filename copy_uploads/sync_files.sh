@@ -18,6 +18,9 @@
 # You can get your auth token via
 # curl -X POST --data "username=<your-username>&password=<your-password>" '<you-server>/api2/auth-token/'
 
+cd $(dirname $0)
+. ../config
+
 if [ "${#}" -lt 5 ]; then
     echo "Usage: $(basename "${0}") <base-url> <auth-token> <repo-id> <source-directory> <target-directory>"
     echo ""
@@ -95,7 +98,7 @@ do
         # it is moved to a directory called `fertig` or in a root directory
         # called `vortraege_konferenz`. We don't want to copy any files that
         # were already cut successfully.
-        fertig_dir_code=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v21}/repos/${repo_id}/dir/detail/?path=/${target_dir}/fertig/${dir_name}" --output /dev/null --write-out '%{http_code}')
+        fertig_dir_code=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v21}/repos/${repo_id}/dir/detail/?path=/${target_dir}/${SEAFILE_PROCESS_COMPLETE_DIR}/${dir_name}" --output /dev/null --write-out '%{http_code}')
         konferenz_dir_code=$(curl --silent -X GET --header "Authorization: Token ${token}" "${api_v21}/repos/${repo_id}/dir/detail/?path=/vortraege_konferenz/${dir_name}" --output /dev/null --write-out '%{http_code}')
 
         if [ "${file_code}" = "404" ] && [ "${fertig_dir_code}" = "404" ] && [ "${konferenz_dir_code}" = "404" ]

@@ -9,6 +9,13 @@ This is a repository with tools and scripts I assembled over the years. It it ce
  - [download_files]: Download files from a password protected directory from [Seafile]
  - [list_prerecorded_talks]: Get a schedule of the pre-recorded and live talks
  - [email_speaker_final]: Create emails with status of pre-recorded files
+ - [utils]: Utilities and scripts for reuse, e.g. for sending mails
+
+For running the scripts you need to configure your API keys and other setting in configuration file `config`. You can do this by copying the sample and edit the file for your needs.:
+```
+cp config.sample config
+vi config
+```
 
 All code is licensed under the [MIT License](LICENSE).
 
@@ -21,4 +28,5 @@ All code is licensed under the [MIT License](LICENSE).
 [download_files]: ./download_files
 [list_prerecorded_talks]: ./list_prerecorded_talks
 [email_speaker_final]: ./email_speaker_final
+[utils]: ./utils
 

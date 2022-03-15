@@ -16,8 +16,9 @@ then
     echo "'cut' not found." && exit 2
 fi
 
-for file in *.mkv
+for file in $(find $1  -name '*.mp4' -o -name '*.mkv')
 do
     length=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${file}"|cut -d '.' -f 1)
+    file=$(basename $file)
     echo "${length} ${file}"
 done

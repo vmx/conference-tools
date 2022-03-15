@@ -2,11 +2,15 @@ Scripts to send upload links to every speaker. You need [Seafile] and [pretalx].
 
 Usage:
 
-    ./upload_talks_to_seafile.sh <pretalx-api-url> <pretalx-api-token> <seafile-base-url> <seafile-auth-token> <seafile-repo-id> <seafile-directory> <email-template-file>"
+    ./upload_talks_to_seafile.sh
 
-Example:
+All needed settings should be set in `../config` 
 
-    ./upload_talks_to_seafile.sh https://pretalx.com/api/events/your-event cc78456d498548331ea9b744f262fa68d23d27e8 https://example.org fe91e764226cc534811f0ba32c62a6ac41ad0d7b 280b593a-f868-0594-d97a-23d88822a35f some-dir email.template"
+- Download submissions and speakers from pretalx
+- Create directories in Seafile including links for every talk
+- Create mails using templates for every submission (Default: `mail_templates/send_upload_links.template`) in `out/emails`.
+
+You can send mails by using `../utils/email_to_pretalx.sh ./out/emails ....`
 
 [Seafile]: https://seafile.com/
 [pretalx]: https://pretalx.com/

@@ -1,0 +1,47 @@
+# Pretalx config
+
+# See https://pretalx.com/orga/me or your own instance
+export PRETALX_URL=https://pretalx.com
+export PRETALX_EVENT=democon
+export PRETALX_API_URL=${PRETALX_URL}/api/events/${PRETALX_EVENT}
+export PRETALX_API_TOKEN= 
+
+# Seafile config
+
+export SEAFILE_URL=https://upload.democon.conf
+# please use `./utils/seafile_get_token.sh`, will also append the to `config`
+export SEAFILE_API_TOKEN=
+# ID of the library in seafile
+export SEAFILE_REPO_ID=
+# Uploads base directory 
+export SEAFILE_UPLOAD_DIR=upload
+# Processing base directory
+export SEAFILE_PROCESS_DIR=processing
+# Subdir in SEAFILE_PROCESS_DIR which contain completed submission
+export SEAFILE_PROCESS_COMPLETE_DIR=completed
+# Final directory for schedule
+export SEAFILE_SCHEDULE_DIR=schedule
+
+# Conference settings
+
+# Filter to exclude special types of talks (for jq) which are not prerecorded
+export TALKS_EXCLUDE_FILTER='select((.submission_type[] | contains("Workshop")) or (.submission_type[] == "Anwendertreffen / BoF") or (.submission_type[] == "Diverses") or (.submission_type[] == "Expert:innenfragestunde")'
+# First day of conference (Format YYYY-MM-DD)
+export FIRST_DAY=2021-06-07
+
+# Mail
+export MAIL_REPLAY_TO="upload@fdemocon.conf"
+export MAIL_TEMPLATES_BASE_DIR="../../templates/en"
+
+export MAIL_UPLOAD_LINKS_SUBJECT="Upload your submission: {submission_title}"
+export MAIL_TEMPLATE_UPLOAD_LINKS="${MAIL_TEMPLATES_BASE_DIR}/send_upload_links.template"
+
+export MAIL_UPLOAD_RECIEVED_SUBJECT="Status recording: {submission_title}"
+export MAIL_TEMPLATE_UPLOAD_RECIEVED="${MAIL_TEMPLATES_BASE_DIR}/upload_recieved.template"
+
+export MAIL_FINAL_SUBJECT="Last information for speakers"
+export MAIL_TEMPLATE_FINAL="${MAIL_TEMPLATES_BASE_DIR}/final_status_mail.template"
+export MAIL_FINAL_RECORED="Thanks for uploading pre-recordings of all your talks." # en
+export MAIL_FINAL_LIVE="You haven't uploaded any pre-recordings." # en
+# export MAIL_FINAL_RECORED="Vielen dank für die Einreichung der Aufzeichnung deines Talks." # de
+# export MAIL_FINAL_LIVE="Du hast uns vorab keine Aufzeichnung übermittelt." # de

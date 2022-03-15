@@ -1,0 +1,24 @@
+{code}
+======
+
+Vortragstitel: {title}
+
+Vortragende: {speakers}
+
+
+Nach dem Ausfüllen nicht vergessen oben rechts auf "Speichern" zu klicken :)
+
+ - [ ] Das Video entspricht dem Vortragstitel
+ - [ ] Bild OK
+ - [ ] Ton Ok
+ - [ ] Folien gut sichtbar
+ - [ ] Vortragender gut sichtbar
+ - [ ] Video ist geschnitten (Anfang und Ende)
+ - [ ] Video wurde zusammengefügt (falls es aus mehreren Teilen bestand)
+ - [ ] Das geschnittene Video ist nicht länger als {duration} Minuten
+ - Name des Reviewers:
+
+Anmerkungen (optional):
+
+
+Nach Abschluss bitte nach {process_completed} verschieben
