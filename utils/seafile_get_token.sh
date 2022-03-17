@@ -9,7 +9,7 @@ cd $(dirname $0)
 
 echo "Login to ${SEAFILE_URL}\n"
 
-read -p "Usernamme: " seafile_username
+read -p "Username: " seafile_username
 stty -echo
 read -p "Password:  " seafile_password
 stty echo
