@@ -32,6 +32,8 @@ from pyyoutube import Client
 from pyyoutube.media import Media
 from pyyoutube.models import Video, VideoSnippet, VideoStatus
 
+YOUTUBE_MAX_TITLE_LENGTH = 100
+YOUTUBE_MAX_DESCRIPTION_LENGTH = 5000
 
 def upload_video(token, title, description, file_path):
     """Uploads a video to YouTube."""
@@ -70,7 +72,7 @@ def main(data=None):
     if data is None:
         if sys.stdin.isatty():
             print(
-                f'Usage: echo \'{{"title": …, "description": …, "video_file": …}}\' | upload_video.py'
+                f'Usage: echo \'{{"title": …, "description": …, "video_file": …}}\' | upload-video.py'
             )
             return 1
         else:
@@ -101,6 +103,18 @@ def main(data=None):
             "JSON object must contain the keys `title`, `description` and `video_file`."
         )
         return 4
+
+    if len(title) > YOUTUBE_MAX_TITLE_LENGTH:
+        print(
+            f"Title must be less than {YOUTUBE_MAX_TITLE_LENGTH} characters long, it was {len(title)} characters long."
+        )
+        return 5
+
+    if len(description) > YOUTUBE_MAX_DESCRIPTION_LENGTH:
+        print(
+            f"Description must be less than {YOUTUBE_MAX_DESCRIPTION_LENGTH} characters long, it was {len(description)} characters long."
+        )
+        return 6
 
     upload_video(token, title, description, video_file)
 
