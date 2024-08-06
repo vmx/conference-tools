@@ -59,11 +59,11 @@ def ensure_https(url):
     return https.geturl()
 
 def to_hashtag(data):
-    '''Removes all whitespace and prepends a hash.'''
+    '''Removes all whitespace, replaces ampersands and prepends a hash.'''
     if data is None:
         return ''
     else:
-        return '#' + ''.join(data.split())
+        return '#' + ''.join(data.split()).replace('&', 'And')
 
 def replace_illegal_characters(data):
     '''Replaces all characters that are not legal in YouTube titles or
