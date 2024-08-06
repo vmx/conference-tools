@@ -7,7 +7,7 @@ import json, os, sys, unicodedata
 from collections import defaultdict
 from pathlib import PurePath
 from urllib import parse
-import re
+import textwrap
 
 import mistune
 # Make sure the `mdtoyt` can be found in the parent directory.
@@ -38,6 +38,9 @@ ADDITIONAL_PERSONS = {
     'XPCXBQ': 'Lorenzo Natali',
     'XHUGFC': 'Antoine Drabble',
 }
+
+YOUTUBE_MAX_TITLE_LENGTH = 100
+YOUTUBE_MAX_DESCRIPTION_LENGTH = 5000
 
 # From https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string/518232#518232
 def strip_accents(s):
@@ -124,6 +127,15 @@ def process_day(day, conf_prefix, videos):
                 video_file = 'ERROR: no video file found'
 
             title = f'{TITLE_PREFIX} | {talk["title"]}'
+            # If the title is longer than the maximum size, preserve the
+            # original title, so that it can be put into the description. That
+            # should enable folks to find the viceo if they search for the full
+            # title.
+            if len(title) > YOUTUBE_MAX_TITLE_LENGTH:
+                title = textwrap.shorten(title, width=YOUTUBE_MAX_TITLE_LENGTH, placeholder='…')
+                maybe_full_title = talk["title"]
+            else:
+                maybe_full_title = None
 
             persons_list = unique([person['public_name'] for person in talk['persons']])
             if talk_id in ADDITIONAL_PERSONS:
@@ -138,7 +150,29 @@ def process_day(day, conf_prefix, videos):
             hashtags_list = [CONF_HASHTAG, TYPE_HASHTAG[conf_prefix], to_hashtag(talk['track'])]
             hashtags = '\\n'.join(hashtags_list)
 
-            description = f'{abstract}\\n\\n{persons}\\n\\n{pretalx_link}\\n\\n{hashtags}'
+            description_list = [
+                maybe_full_title,
+                abstract,
+                persons,
+                pretalx_link,
+                hashtags
+            ]
+            # The full title may not be set, hence filter it out.
+            description = '\\n\\n'.join(filter(None, description_list))
+            # If the description is too long, then shorten the abstract, but
+            # keep the rest the same.
+            if len(description) > YOUTUBE_MAX_DESCRIPTION_LENGTH:
+                max_abstract_len = YOUTUBE_MAX_DESCRIPTION_LENGTH - (len(description) - len(abstract))
+                abstract = textwrap.shorten(description, width=max_abstract_len, placeholder='…')
+                description_list = [
+                    maybe_full_title,
+                    abstract,
+                    persons,
+                    pretalx_link,
+                    hashtags
+                ]
+                # The full title may not be set, hence filter it out.
+                description = '\\n\\n'.join(filter(None, description_list))
 
             metadata = {
                 'video_file': video_file,
