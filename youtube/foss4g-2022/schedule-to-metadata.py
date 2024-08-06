@@ -140,7 +140,7 @@ def process_day(day, conf_prefix, videos):
             persons_list = unique([person['public_name'] for person in talk['persons']])
             if talk_id in ADDITIONAL_PERSONS:
                 persons_list.insert(0, ADDITIONAL_PERSONS[talk_id])
-            persons = '\\n'.join(persons_list)
+            persons = '\n'.join(persons_list)
 
             markdown_renderer = mistune.create_markdown(renderer=YouTubeRenderer())
             abstract = markdown_renderer(talk['abstract']).strip()
@@ -148,7 +148,7 @@ def process_day(day, conf_prefix, videos):
             pretalx_link = ensure_https(talk['url'])
 
             hashtags_list = [CONF_HASHTAG, TYPE_HASHTAG[conf_prefix], to_hashtag(talk['track'])]
-            hashtags = '\\n'.join(hashtags_list)
+            hashtags = '\n'.join(hashtags_list)
 
             description_list = [
                 maybe_full_title,
@@ -158,7 +158,7 @@ def process_day(day, conf_prefix, videos):
                 hashtags
             ]
             # The full title may not be set, hence filter it out.
-            description = '\\n\\n'.join(filter(None, description_list))
+            description = '\n\n'.join(filter(None, description_list))
             # If the description is too long, then shorten the abstract, but
             # keep the rest the same.
             if len(description) > YOUTUBE_MAX_DESCRIPTION_LENGTH:
@@ -172,7 +172,7 @@ def process_day(day, conf_prefix, videos):
                     hashtags
                 ]
                 # The full title may not be set, hence filter it out.
-                description = '\\n\\n'.join(filter(None, description_list))
+                description = '\n\n'.join(filter(None, description_list))
 
             metadata = {
                 'video_file': video_file,
