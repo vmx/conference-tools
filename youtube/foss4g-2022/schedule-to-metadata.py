@@ -65,6 +65,11 @@ def to_hashtag(data):
     else:
         return '#' + ''.join(data.split())
 
+def replace_illegal_characters(data):
+    '''Replaces all characters that are not legal in YouTube titles or
+    descriptions.'''
+    return data.replace('<', '＜').replace('>', '＞')
+
 
 # Mapping between the room in the schedule.json and the uploaded files.
 ROOM_MAPPING = {
@@ -126,7 +131,7 @@ def process_day(day, conf_prefix, videos):
             except:
                 video_file = 'ERROR: no video file found'
 
-            title = f'{TITLE_PREFIX} | {talk["title"]}'
+            title = replace_illegal_characters(f'{TITLE_PREFIX} | {talk["title"]}')
             # If the title is longer than the maximum size, preserve the
             # original title, so that it can be put into the description. That
             # should enable folks to find the viceo if they search for the full
@@ -159,6 +164,7 @@ def process_day(day, conf_prefix, videos):
             ]
             # The full title may not be set, hence filter it out.
             description = '\n\n'.join(filter(None, description_list))
+            description = replace_illegal_characters(description)
             # If the description is too long, then shorten the abstract, but
             # keep the rest the same.
             if len(description) > YOUTUBE_MAX_DESCRIPTION_LENGTH:
