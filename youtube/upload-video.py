@@ -21,9 +21,9 @@
 #
 # If you have a file that contains one of those JSON object per line, e.g. like
 # the output from the FOSS4G 2022 `schedule-to-metadata.py` script, you can use
-# `xargs` to process the whole file:
+# `./pipe-each-line.py` to process the whole file:
 #
-# cat metadata.ndjson | YOUTUBE_ACCESS_TOKEN='ya29.a0AXooCgsMQcaKptaaOmy8ZmWu2ohKc85YS2l1l6D89AhIx9Qbz5sZqHZnM06qnfXRu71hxq-loEePjq3V-S2j6lT1pcrzTP_sFgH4AcbiEKB0OvQ656OJlUN2V0vIxjgpYN2LXel9j5LdyldPrYQNPcTtJBtplFeIcN0DaCgYKAXwSARESFQHGX2Mi6b7fvQFL09DLSvX1LyDpKA0171' xargs --delimiter='\n' --replace={} sh -c "echo '{}' | ./upload-video.py"
+#     cat metadata.ndjson | YOUTUBE_ACCESS_TOKEN='ya29.a0AXooCgsMQcaKptaaOmy8ZmWu2ohKc85YS2l1l6D89AhIx9Qbz5sZqHZnM06qnfXRu71hxq-loEePjq3V-S2j6lT1pcrzTP_sFgH4AcbiEKB0OvQ656OJlUN2V0vIxjgpYN2LXel9j5LdyldPrYQNPcTtJBtplFeIcN0DaCgYKAXwSARESFQHGX2Mi6b7fvQFL09DLSvX1LyDpKA0171' ./pipe-each-line.py ./upload-video.py
 
 import json, os, sys
 from operator import itemgetter

@@ -8,6 +8,7 @@ These tools were originally created in order to get the recorded talk of the [FO
      You need to have [`mistune`] installed in order to use it. It's a command line utility as well as a library that exports `YouTubeRenderer` which can be used by `mistune`.
  - [get-token.py]: Tool to get a YouTube token in order to upload files. It requires a client secret JSON file. Detailed steps on how to generate such a file can be found at the top of the source file.
  - [upload-video.py]: Tool to upload a video to YouTube once you have a valid access token.
+ - [pipe-each-line.py]: Tool to process a list of videos you'd like to upload.
 
 For ease of use a `requirements.txt` is provided that install all dependencies that are needed for any of the scripts. So before you execute any of them you can create a virtualenv with everything you need:
 
