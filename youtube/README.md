@@ -26,5 +26,6 @@ The code is licensed under the [MIT License](../LICENSE) unless otherwise noted.
 [mdtoyt.py]: ./mdtoyt.py
 [get-token.py]: ./get-token.py
 [upload-video.py]: ./upload-video.py
+[pipe-each-line.py]: ./pipe-each-line.py
 [Markdown]: https://en.wikipedia.org/wiki/Markdown
 [`mistune`]: https://pypi.org/project/mistune/
